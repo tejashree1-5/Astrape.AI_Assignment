@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Items & Cart</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    h1, h2 {
+        text-align: center;
+        color: #fff;
+    }
+    .section {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 900px;
+    }
+    .item-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    .item {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+    .item:hover { transform: scale(1.05); }
+    .item img {
+        max-width: 100%;
+        height: 120px;
+        object-fit: contain;
+        margin-bottom: 8px;
+    }
+    .item h3 { margin: 4px 0; font-size: 16px; }
+    .item p { margin: 4px 0; color: #555; }
+    .item button {
+        padding: 8px 12px;
+        background: #6a11cb;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .item button:hover { background: #2575fc; }
+
+    .cart-items { list-style: none; padding: 0; }
+    .cart-items li {
+        display: flex;
+        justify-content: space-between;
+        background: #f3f3f3;
+        margin: 6px 0;
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+    .cart-items button {
+        background: crimson; color: #fff; border: none;
+        padding: 4px 8px; border-radius: 4px; cursor: pointer;
+    }
+    .total {
+        margin-top: 10px; font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>Available Items</h1>
+
+<div class="section">
+    <h2>Shop Items</h2>
+    <div class="item-list" id="shopItems">
+        <!-- Items go here -->
+    </div>
+</div>
+
+<div class="section">
+    <h2>Your Cart</h2>
+    <ul id="cartList" class="cart-items"></ul>
+    <div class="total" id="totalPrice">Total: ₹0</div>
+</div>
+
+<script>
+/* ----- Sample Items with Images ----- */
+const itemsData = [
+    { id: 101, name: "Wireless Headphones", price: 1999, img : "wirelessearphones.jpg"},
+    { id: 102, name: "Gaming Mouse",       price: 1299, img: "gamingmouse.jpg" },
+    { id: 103, name: "Laptop Sleeve",      price: 899,  img: "laptop.jpg" },
+    { id: 104, name: "Portable Charger",   price: 1599, img: "portablecharger.jpg" },
+    { id: 105, name: "Smart LED Bulb",     price: 499,  img: "bulb.jpg" }
+];
+
+let cart = [];
+
+/* ----- Render Items Section ----- */
+function renderItems() {
+    const container = document.getElementById('shopItems');
+    container.innerHTML = '';
+    itemsData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+            <img src="${item.img}" alt="${item.name}">
+            <h3>${item.name}</h3>
+            <p>₹${item.price}</p>
+            <button onclick="addToCart(${item.id})">Add to Cart</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+/* ----- Render Cart Section ----- */
+function renderCart() {
+    const cartList = document.getElementById('cartList');
+    cartList.innerHTML = '';
+
+    let total = 0;
+    cart.forEach((item, index) => {
+        total += item.price;
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span>${item.name} - ₹${item.price}</span>
+            <button onclick="removeFromCart(${index})">Remove</button>
+        `;
+        cartList.appendChild(li);
+    });
+
+    document.getElementById('totalPrice').textContent = `Total: ₹${total}`;
+}
+
+/* ----- Add & Remove Logic ----- */
+function addToCart(itemId) {
+    const found = itemsData.find(p => p.id === itemId);
+    if (found) {
+        cart.push(found);
+        renderCart();
+    }
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    renderCart();
+}
+
+/* ----- Initial Render ----- */
+renderItems();
+renderCart();
+</script>
+
+</body>
+</html>

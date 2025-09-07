@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up | My WebApp</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background-color: rgba(255,255,255,0.95);
+        padding: 40px 50px;
+        border-radius: 15px;
+        box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        width: 350px;
+        text-align: center;
+    }
+    .container h2 {
+        margin-bottom: 30px;
+        color: #333;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+        border-color: #6a11cb;
+    }
+    .toggle-password {
+        float: right;
+        margin-top: -35px;
+        margin-right: 10px;
+        cursor: pointer;
+        color: #6a11cb;
+    }
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #6a11cb;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background-color: #2575fc;
+    }
+    .message {
+        margin-top: 15px;
+        font-size: 14px;
+        color: green;
+    }
+    .error {
+        color: red;
+    }
+    a {
+        color: #6a11cb;
+        text-decoration: none;
+        display: block;
+        margin-top: 15px;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+        <input type="text" id="signupName" placeholder="Full Name" required>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <span class="toggle-password" onclick="togglePassword('signupPassword')">Show</span>
+        <button type="submit">Sign Up</button>
+        <div class="message" id="signupMessage"></div>
+    </form>
+    <a href="login.html">Already have an account? Login</a>
+</div>
+
+<script>
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+document.getElementById('signupForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+
+    // Password validation: at least 8 chars, 1 uppercase, 1 digit
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    if(!passwordRegex.test(password)) {
+        document.getElementById('signupMessage').textContent = "Password must be 8+ characters, include 1 uppercase and 1 number.";
+        document.getElementById('signupMessage').classList.add('error');
+        return;
+    }
+
+    document.getElementById('signupMessage').textContent = "Signup Successful!";
+    document.getElementById('signupMessage').classList.remove('error');
+
+    // Here you can add code to save the user info to your database
+});
+</script>
+</body>
+</html>
